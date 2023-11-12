@@ -18,7 +18,7 @@ public class AuthService {
         return(List<modelAutor>) auhtRepository.findAll();
     }
 
-    public modelAutor guardarAutor(modelAutor autor) {
+    public modelAutor saveAutor(modelAutor autor){
         return auhtRepository.save(autor);
     }
 

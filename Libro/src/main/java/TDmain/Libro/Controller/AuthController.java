@@ -30,7 +30,7 @@ public class AuthController {
 
     @PostMapping
     public modelAutor saveAutor(@RequestBody modelAutor autor){
-        return this.authService.guardarAutor(autor);
+        return this.authService.saveAutor(autor);
     }
 
     @GetMapping(path = "/{id}")
