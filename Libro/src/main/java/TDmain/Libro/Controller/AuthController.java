@@ -48,9 +48,9 @@ public class AuthController {
         boolean eliminar = this.authService.deleteAutor(id);
 
         if (eliminar) {
-            return "Usuario con ID "+ id + " eliminado";
+            return "USUARIO ID"+ id + "ELIMINADO";
         }else{
-            return "error al eliminar";
+            return "ERROR AL ELIMINAR";
         }
     }
 }
