@@ -23,7 +23,7 @@ public class AuthService {
     }
 
     public Optional<modelAutor> getById(Integer id){
-        return auhtRepository.findBy(id);
+        return auhtRepository.findById(id);
     }
 
     public modelAutor updateById(modelAutor request, Integer id){
