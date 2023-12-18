@@ -55,7 +55,7 @@ public class AutorController {
 
     private final AuthService authService;
 
-    // Constructor para inyectar authService (asegúrate de tenerlo en tu clase)
+   
     public AutorController(AuthService authService) {
         this.authService = authService;
     }
