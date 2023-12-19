@@ -60,9 +60,5 @@ public class AuthRequest implements Serializable{
 
     public void setEmails(String emails) {
         this.emails = emails;
-    }
-    
-    
-
-    
+    }   
 }
