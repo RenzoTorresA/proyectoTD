@@ -1,11 +1,11 @@
 package TDmain.Libro.Controller;
 
+import java.util.Collections;
 import java.util.List;
 
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import TDmain.Libro.dto.AuthRequest;
-import TDmain.Libro.model.AutorMappers;
+
 import TDmain.Libro.model.modelAutor;
 
 import TDmain.Libro.service.IAuthService;
@@ -26,25 +26,16 @@ import TDmain.Libro.service.IAuthService;
 public class AuthController {
     
     @Autowired
-    IAuthService authService;
+    AuthService authService;
 
-    @Autowired
-    AutorMappers autorMappers;
-
-    @GetMapping("/getAll")
-    public List<AuthRequest> getAll(){
-
-            List<modelAutor> autores = authService.findAll();
-            return autores.stream().map(autorMappers::entityToDto).collect(Collectors.toList());
-        
+    @GetMapping
+    public List<modelAutor> get(){
+        return authService.getAllAutor();
     }
 
-    @PostMapping("/create")
-    public AuthRequest create(@RequestBody AuthRequest authRequest){
-        modelAutor autor = autorMappers.dtoToEntity(authRequest);
-        autor = authService.add(autor);
-        return autorMappers.entityToDto(autor);
-        
+    @PostMapping
+    public modelAutor saveAutor(@RequestBody modelAutor autor){
+        return this.authService.saveAutor(autor);
     }
 
     @GetMapping("/getById")
@@ -60,8 +51,14 @@ public class AuthController {
         return autorMappers.entityToDto(autor);
     }
 
-    @DeleteMapping("/delete")
-    public boolean deleteById(int id){
-        return authService.delete(id);
+    @DeleteMapping(path = "/{id}")
+    public String deleteById(@PathVariable("id") Integer id){
+        boolean eliminar = this.authService.deleteAutor(id);
+
+        if (eliminar) {
+            return "Usuario con ID "+ id + " eliminado";
+        }else{
+            return "error al eliminar";
+        }
     }
 }
