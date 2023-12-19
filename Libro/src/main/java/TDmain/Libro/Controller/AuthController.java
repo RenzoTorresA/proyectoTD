@@ -43,7 +43,6 @@ public class AuthController {
     AutorMappers autorMappers;
 
     @GetMapping("/getAll")
-<<<<<<< Updated upstream
     public ResponseEntity<ApiResponse<List<AuthRequest>>> getAll(){
 
            try{
@@ -92,23 +91,28 @@ public class AuthController {
         }
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<ApiResponse<AuthRequest>> update(@RequestBody AuthRequest authRequest){
-        try{
-            // Llamada al servicio para actualizar el usuario
-            modelAutor autores = authService.update(autorMappers.dtoToEntity(authRequest));
-            // Construir la respuesta exitosa
-            AuthRequest actualizarAuthRequest = autorMappers.entityToDto(autores);
-            return ResponseEntity.ok(new ApiResponse<>(HttpStatus.OK.value(), "Usuario actualizado", actualizarAuthRequest));
-        }catch(UsuarioNotFoundException ex){
-            logger.error("Error al actualizar Autor", ex);
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse<>(HttpStatus.NOT_FOUND.value(), ex.getMessage(), null));
+    @GetMapping("/getAll")
+    public List<modelAutor> get() {
+        try {
+            return this.authService.getAllAutor();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al obtener la lista de autores", e);
         }
-        catch(Exception ex){
-            logger.error("Error en el metodo UPDATE", ex);
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(),
-            "Error al actulizar Autor", null));
-        }
+    }
+}
+
+
+
+
+    @GetMapping(path = "/{id}")
+    public Optional<modelAutor> getAutorById(@PathVariable("id") Integer id){
+        return this.authService.getById(id);
+    }
+
+    @PutMapping(path = "/{id}")
+    public modelAutor updateAutorById(@RequestBody modelAutor request, @PathVariable("id") Integer id){
+        return this.authService.updateById(request, id);
     }
 
     @DeleteMapping("/delete")
@@ -130,35 +134,6 @@ public class AuthController {
             // Manejar otras excepciones y devolver una respuesta 500 Internal Server Error con un mensaje genérico
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), 
             "Error al aliminar usuario", null));
-=======
-    public List<modelAutor> get() {
-        try {
-            return this.authService.getAllAutor();
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al obtener la lista de autores", e);
-        }
-    }
-}
-    @GetMapping(path = "/{id}")
-    public Optional<modelAutor> getAutorById(@PathVariable("id") Integer id){
-        return this.authService.getById(id);
-    }
-
-    @PutMapping(path = "/{id}")
-    public modelAutor updateAutorById(@RequestBody modelAutor request, @PathVariable("id") Integer id){
-        return this.authService.updateById(request, id);
-    }
-
-    @DeleteMapping(path = "/{id}")
-    public String deleteById(@PathVariable("id") Integer id){
-        boolean eliminar = this.authService.deleteAutor(id);
-
-        if (eliminar) {
-            return "USUARIO ID"+ id + " eliminado";
-        }else{
-            return "ERROR AL ELIMINAR";
->>>>>>> Stashed changes
         }
     }
 }
