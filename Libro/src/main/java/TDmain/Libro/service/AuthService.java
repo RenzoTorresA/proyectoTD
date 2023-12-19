@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import TDmain.Libro.model.UsuarioNotFoundException;
 import TDmain.Libro.model.modelAutor;
 import TDmain.Libro.repository.IAuhtRepository;
 
@@ -33,8 +34,11 @@ public class AuthService implements IAuthService {
     @Override
     public modelAutor update(modelAutor autor) {
 
-        return auhtRepository.save(autor);
-
+        if (auhtRepository.existsById(autor.getIdautorres())) {
+            return auhtRepository.save(autor);
+        }else{
+            throw new UsuarioNotFoundException("No se puede actualizar. Usuario no encontrado con ID:"+ autor.getIdautorres());
+        }
     }
 
     @Override
