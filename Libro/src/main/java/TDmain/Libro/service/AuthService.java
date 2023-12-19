@@ -10,39 +10,39 @@ import TDmain.Libro.model.modelAutor;
 import TDmain.Libro.repository.IAuhtRepository;
 
 @Service
-public class AuthService {
+public class AuthService implements IAuthService {
     @Autowired
     IAuhtRepository auhtRepository;
 
-    public List<modelAutor> getAllAutor(){
-        return(List<modelAutor>) auhtRepository.findAll();
+    @Override
+    public List<modelAutor> findAll() {
+        return (List<modelAutor>) auhtRepository.findAll();
     }
 
-    public modelAutor saveAutor(modelAutor autor){
+    @Override
+    public modelAutor add(modelAutor autor){
         return auhtRepository.save(autor);
     }
 
-    public Optional<modelAutor> getById(Integer id){
-        return auhtRepository.findById(id);
+    @Override
+    public modelAutor findById(int id) {
+        Optional<modelAutor> autor = auhtRepository.findById(id);
+        return autor.get();
     }
 
-    public modelAutor updateById(modelAutor request, Integer id){
-        modelAutor autor = auhtRepository.findById(id).get();
+    @Override
+    public modelAutor update(modelAutor autor) {
 
-        autor.setNombre(request.getNombre());
-        autor.setApellido(request.getApellido());
-        autor.setDni(request.getDni());
-        autor.setEmails(request.getEmails());
+        return auhtRepository.save(autor);
 
-        auhtRepository.save(autor);
-        return autor;
     }
 
-    public Boolean deleteAutor(Integer id){
-        try{
+    @Override
+    public boolean delete(int id) {
+        try {
             auhtRepository.deleteById(id);
             return true;
-        }catch(Exception e){
+        } catch (Exception e) {
             return false;
         }
     }
